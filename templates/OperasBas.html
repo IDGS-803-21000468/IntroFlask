@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<h1>Calcular</h1>
+
+<div style="display: flex; align-items: center;">
+    <form action="/resultado" method="post" style="margin-right: 20px;">
+        <label>N1:</label>
+        <input type="number" name="n1">
+        <label>N2:</label>
+        <input type="number" name="n2">
+        <input type="submit" value="Calcular" class="btn btn-primary">
+    </form>
+
+    {% if res is not none %}
+    <h1 style="margin-left: 20px;">Resultado: {{ res }}</h1>
+    {% endif %}
+</div>
+
+{% endblock %}
