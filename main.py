@@ -17,6 +17,80 @@ def index():
 def ejemplo1():
     return render_template("ejemplo1.html")
 
+@app.route("/cine", methods=['GET', 'POST'])
+
+def cine():
+
+    precio_boletos = 12
+
+    boletos_por_persona = 7
+
+    resultado = ""
+
+ 
+
+    if request.method == 'POST':
+
+        nombre = request.form.get('nombre')
+
+        cantidad_compradores = request.form.get('cantidadCompradores', 0, type=int)
+
+        boletos = request.form.get('boletos', 0, type=int)
+
+        cineco = request.form.get('cineco', "no")  
+
+ 
+
+        if not nombre:
+
+            return render_template('cine.html', resultado="Debes ingresar tu nombre.")
+
+ 
+
+        boletos_maximos = cantidad_compradores * boletos_por_persona  
+
+        if boletos > boletos_maximos:
+
+            return f"Exceso de boletos, el máximo es {boletos_maximos}"
+
+ 
+
+        if boletos >= 5:
+
+            descuento = 0.15
+
+        elif boletos >= 3:
+
+            descuento = 0.10
+
+        else:
+
+            descuento = 0
+
+ 
+
+        total = boletos * precio_boletos
+
+        total_descuento = total * (1 - descuento)
+
+ 
+
+        if cineco == "si":
+
+            total_descuento *= 0.90  
+
+ 
+
+            total_descuento = round(total_descuento, 2)
+
+ 
+
+        resultado = f"{nombre} su total de boletos son: {boletos}, Valor Total a Pagar: ${total_descuento}"
+
+ 
+
+    return render_template('cine.html', resultado=resultado)
+
 @app.route("/ejemplo2")
 def ejemplo2():
     return render_template("ejemplo2.html")
