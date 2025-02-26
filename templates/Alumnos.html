@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block container %}
+   <form action="/Alumnos" method="post" novalidate>
+    
+    {{form.csrf_token}}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="row control-group">
+            <label for="matricula">Matrícula</label>
+            <div class="form-group col-xs-12 floating-label-form-group content">
+                {{ form.matricula(class="form-control") }}
+            </div>
+        </div>
+        <div class="row control-group">
+            <label for="edad">Edad</label>
+            <div class="form-group col-xs-12 floating-label-form-group content">
+                {{ form.edad(class="form-control") }}
+            </div>
+        </div>
+        <div class="row control-group">
+            <label for="nombre">Nombre</label>
+            <div class="form-group col-xs-12 floating-label-form-group content">
+                {{ form.name(class="form-control") }}
+            </div>
+        </div>  
+        <div class="row control-group">
+            <label for="apellido">Apellido</label>
+            <div class="form-group col-xs-12 floating-label-form-group content">
+                {{ form.apellidos(class="form-control") }}
+            </div>
+        </div>
+        <div class="row control-group">
+            <label for="email">Email</label>
+            <div class="form-group col-xs-12 floating-label-form-group content">
+                {{ form.email(class="form-control") }}
+            </div>
+        </div>
+        <input type="submit" value="Enviar" class="btn btn-primary">
+   </form>
+
+   <h2>Matrícula: {{ mat }}</h2>
+   <h2>Nombre: {{ nom }}</h2>
+   <h2>Edad: {{ edad }}</h2>
+   <h2>Correo: {{ correo }}</h2>
+   <h2>Apellidos: {{ ape }}</h2>
+{% endblock %}

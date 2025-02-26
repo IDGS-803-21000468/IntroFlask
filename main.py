@@ -1,17 +1,60 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for
+from forms import UseForm
+from flask import g
+from flask import flash
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
-
+app.secret_key="1234567"
+csrf = CSRFProtect(app)
 res=0
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("400.html"), 404
+
+@app.before_request
+def before_request():
+    g.nombre = "Pedro"
+    print("Before request 1")
+
+@app.after_request
+def after_request(response):
+    print("after request 2")
+    return response
+
 @app.route('/')
 def home():
-    return "Hello, World!, This is a simple Flask API"
+    lista = {"betillo", "betillo", "antoi"}
+    print("Index 2")
+    print("Hola {}".format(g.nombre))
+    grupo = "IDGS-803"
+    return render_template("index.html", grupo=grupo, lista=lista)
 
 @app.route('/index')
 def index():
     grupo="IDGS803"
     lista = ["Mario", "Pepe", "juan", 24, 25]
     return render_template("index.html",grupo= grupo, lista= lista)
+
+@app.route('/Alumnos', methods=['GET', 'POST'])
+def Alumnos():
+    alumno_clase = UseForm(request.form)
+    mat = nom = edad = correo = ape = ''
+    
+    if request.method == 'POST' and alumno_clase.validate():
+        mat = alumno_clase.matricula.data
+        nom = alumno_clase.name.data
+        edad = alumno_clase.edad.data
+        correo = alumno_clase.email.data
+        ape = alumno_clase.apellidos.data
+
+        mensaje= "bienvendio {}".format(nom)
+        flash(mensaje)
+    return render_template('Alumnos.html', form=alumno_clase, mat=mat, nom=nom, edad=edad, correo=correo, ape=ape)
+
+
 
 @app.route("/ejemplo1")
 def ejemplo1():
@@ -140,4 +183,5 @@ def suma(num1, num2):
     return f"La suma de {num1} + {num2} es {num1 + num2}"
 
 if __name__ == '__main__':
+    csrf.init_app(app)
     app.run(debug=True, port=3000)
